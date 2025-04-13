@@ -21,19 +21,19 @@ sys.stdout.write("\nQual a representação desejada (fixas/dinâmicas)? ")
 texto = sys.stdin.readline().strip()
 if texto == "fixas" or texto == "Fixas":
 	c[-1] = False
-	print "fixas"
+	print("fixas")
 else:
 	c[-1] = True
-	print "dinâmicas"
+	print("dinâmicas")
 
 sys.stdout.write("\nCom ou sem elitismo? (com/sem)")
 texto = sys.stdin.readline().strip()
 if texto == "Com" or texto == "com":
 	c[-2] = 0.1
-	print "Com elitismo"
+	print("Com elitismo")
 else:
 	c[-2] = 0.0
-	print "Sem Elitismo"
+	print("Sem Elitismo")
 
 sys.stdout.write("\nQual o teste desejado?\n")
 sys.stdout.write("1 - Nº de gerações + nº de indivíduos + nº de genes\n")
@@ -56,7 +56,7 @@ if teste == 1:
 		sys.stdout.write(output[-1])
 		output.append("-----------------------------------------\n")
 		sys.stdout.write(output[-1])
-		for i in xrange(4):
+		for i in range(4):
 			c[i] = ponto[i]
 		for gene in ngenes:
 			c[6] = gene
@@ -95,7 +95,7 @@ elif teste == 2:
 		sys.stdout.write(output[-1])
 		output.append("-----------------------------------------\n")
 		sys.stdout.write(output[-1])
-		for i in xrange(4):
+		for i in range(4):
 			c[i] = ponto[i]
 		for mutacao in prob_mutacao:
 			c[10] = mutacao
@@ -137,7 +137,7 @@ elif teste == 3:
 		sys.stdout.write(output[-1])
 		output.append("-----------------------------------------\n")
 		sys.stdout.write(output[-1])
-		for i in xrange(4):
+		for i in range(4):
 			c[i] = ponto[i]
 		for gene in ngenes:
 			c[6] = gene

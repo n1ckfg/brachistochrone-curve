@@ -34,7 +34,7 @@ def grafico_curva(curva, data):
 	x = []
 	y = []
 	
-	for i in xrange(0, len(curva), 2):
+	for i in range(0, len(curva), 2):
 		x.append(curva[i])
 		y.append(curva[i+1])
 	
@@ -47,7 +47,7 @@ def grafico_curva(curva, data):
 
 # mostra a evolução da população
 def grafico_geracoes(dadosgeracoes, data):
-	x = [i for i in xrange(len(dadosgeracoes))]
+	x = [i for i in range(len(dadosgeracoes))]
 	melhor = [dado[0] for dado in dadosgeracoes]
 	pior = [dado[1] for dado in dadosgeracoes]
 	media = [dado[2] for dado in dadosgeracoes]
@@ -72,7 +72,7 @@ def percentagem(numero):
 # cria um indivíduo de acordo com as regras exigidas
 def cria_individuo(x1, y1, x2, y2, ngenes, abcissas_aleatorias):
 	individuo = [x1, y1]
-	for i in xrange(ngenes-2):
+	for i in range(ngenes-2):
 		if abcissas_aleatorias:
 			individuo.append(uniform(x1, x2))
 		else:
@@ -89,16 +89,16 @@ def cria_individuo(x1, y1, x2, y2, ngenes, abcissas_aleatorias):
 # ordena as abcissas de um indivído com abcissas geradas aleatoriamente
 def ordena_abcissas(individuo):
 	temp = []
-	for i in xrange(0, len(individuo), 2):
+	for i in range(0, len(individuo), 2):
 		temp.append([individuo[i], individuo[i+1]])
 	temp.sort(key=itemgetter(0))
 	aux = temp[0][0]
-	for i in xrange(1, len(temp)):
+	for i in range(1, len(temp)):
 		if aux == temp[i][0]:
 			return False
 		else:
 			aux = temp[i][0]
-	for i in xrange(len(temp)):
+	for i in range(len(temp)):
 		individuo[i*2] = temp[i][0]
 		individuo[i*2+1] = temp[i][1]
 	return individuo
@@ -112,25 +112,25 @@ def seleccao(populacao, tamanho_torneio):
 		return torneio[0]
 	# selecciona através do método da roleta se o tamanho de torneio for 0
 	else:
-		roleta = [0 for i in xrange(len(populacao))]
+		roleta = [0 for i in range(len(populacao))]
 		total = 0
-		for i in xrange(len(populacao)):
+		for i in range(len(populacao)):
 			total += 1.0/populacao[i][1]
 			roleta[i] = total
 		resultado = uniform(0, total)
-		for i in xrange(len(populacao)):
+		for i in range(len(populacao)):
 			if roleta[i] > resultado:
 				return populacao[i]
 
 # cria novos descendentes através do método de recombinação de genes
 def recombinacao(nrecombinacao, progenitor1, progenitor2, abcissas_aleatorias):
-	p1y = [progenitor1[i*2+1] for i in xrange(len(progenitor1)/2)]
-	p2y = [progenitor2[i*2+1] for i in xrange(len(progenitor2)/2)]
-	pontos = [choice(xrange(len(p1y))) for i in xrange(nrecombinacao)]
+	p1y = [progenitor1[i*2+1] for i in range(int(len(progenitor1)/2))]
+	p2y = [progenitor2[i*2+1] for i in range(int(len(progenitor2)/2))]
+	pontos = [choice(range(len(p1y))) for i in range(nrecombinacao)]
 	pontos.sort()
 	d1y = p1y[:pontos[0]]
 	d2y = p2y[:pontos[0]]
-	for i in xrange(len(pontos)-1):
+	for i in range(len(pontos)-1):
 		p1y, p2y = p2y, p1y
 		d1y.extend(p1y[pontos[i]:pontos[i+1]])
 		d2y.extend(p2y[pontos[i]:pontos[i+1]])
@@ -138,7 +138,7 @@ def recombinacao(nrecombinacao, progenitor1, progenitor2, abcissas_aleatorias):
 	d2y.extend(p1y[pontos[-1]:])
 	descendente1 = progenitor1[:]
 	descendente2 = progenitor2[:]
-	for i in xrange(len(d1y)):
+	for i in range(len(d1y)):
 		descendente1[i*2+1] = d1y[i]
 		descendente2[i*2+1] = d2y[i]
 	return [[descendente1, calcBrachTime(descendente1)], [descendente2, calcBrachTime(descendente2)]]
@@ -146,7 +146,7 @@ def recombinacao(nrecombinacao, progenitor1, progenitor2, abcissas_aleatorias):
 # cria novos descendentes através do método de mutação de genes
 def mutacao(individuo, y1, abcissas_aleatorias):
     cromossomas = individuo[0]
-    i = 1+2+2*choice(xrange((len(cromossomas)-4)/2))
+    i = 1+2+2*choice(range(int((len(cromossomas)-4)/2)))
     novo_gene = uniform(0, y1)
     while novo_gene == cromossomas[i]:
         novo_gene = uniform(0, y1)
@@ -194,18 +194,18 @@ def run(x1, y1, x2, y2, ngeracoes, nindividuos, ngenes, tamanho_torneio, nrecomb
 	dadosgeracoes = []
 	
 	# cria a população e avalia-a
-	populacao = [cria_individuo(x1, y1, x2, y2, ngenes, abcissas_aleatorias) for i in xrange(nindividuos)]
+	populacao = [cria_individuo(x1, y1, x2, y2, ngenes, abcissas_aleatorias) for i in range(nindividuos)]
 	
-	for geracao in xrange(ngeracoes):
+	for geracao in range(ngeracoes):
 	
 		# selecciona os progenitores
-		progenitores = [seleccao(populacao, tamanho_torneio) for i in xrange(nindividuos)]
+		progenitores = [seleccao(populacao, tamanho_torneio) for i in range(nindividuos)]
 		
 		# cria descendentes
 		descendentes = []
 		
 		# por recombinação
-		for i in xrange(0, nindividuos, 2):
+		for i in range(0, nindividuos, 2):
 			if random() < prob_recombinacao:
 				descendentes.extend(recombinacao(nrecombinacao, progenitores[i][0], progenitores[i+1][0], abcissas_aleatorias))
 				nrecombinacoes += 2
@@ -213,7 +213,7 @@ def run(x1, y1, x2, y2, ngeracoes, nindividuos, ngenes, tamanho_torneio, nrecomb
 				descendentes.extend([progenitores[i], progenitores[i+1]])
 				
 		# por mutação
-		for i in xrange(nindividuos):
+		for i in range(nindividuos):
 			if random() < prob_mutacao:
 				descendentes[i] = mutacao(descendentes[i], y1, abcissas_aleatorias)
 				nmutacoes += 1
@@ -315,13 +315,13 @@ def configuracoes(prints):
 	return [x1,y1,x2,y2,ngeracoes,nindividuos,ngenes,tamanho_torneio,nrecombinacao,prob_recombinacao,prob_mutacao,tamanho_elite,abcissas_aleatorias]
 
 def brachistochrone(n, prints, c):
-	medias = [0.0 for i in xrange(4)]
-	for i in xrange(n):
+	medias = [0.0 for i in range(4)]
+	for i in range(n):
 		temp = run(c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10], c[11], c[12])
-		for j in xrange(4):
+		for j in range(4):
 			medias[j] += temp[j]
 	
-	for i in xrange(4):
+	for i in range(4):
 		medias[i] /= n
 	sys.stdout.write("Melhor indivíduo: %.5f    " % (medias[0]))
 	sys.stdout.write("Pior indivíduo: %.5f    " % (medias[1]))
